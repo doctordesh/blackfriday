@@ -271,7 +271,14 @@ func (options *Html) BlockCode(out *bytes.Buffer, text []byte, info string) {
 		attrEscape(out, []byte(lang))
 		out.WriteString("\">")
 	}
-	attrEscape(out, text)
+
+	// span-tag for each line to support line numbers
+	for _, line := range strings.Split(string(text), "\n") {
+		out.WriteString("<span>")
+		attrEscape(out, []byte(line))
+		out.WriteString("\n</span>")
+	}
+
 	out.WriteString("</code></pre>\n")
 }
 
